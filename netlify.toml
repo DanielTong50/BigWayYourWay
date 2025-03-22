@@ -1,6 +1,10 @@
 [build]
   command = "npm run build"
-  publish = "build"
+  publish = ".netlify/functions-internal/server"
+  edge_functions = "true"
+
+[build.environment]
+  NODE_VERSION = "18"
 
 [[redirects]]
   from = "/*"
