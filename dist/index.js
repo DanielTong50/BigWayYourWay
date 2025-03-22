@@ -109,7 +109,7 @@ class Trouter {
 
 /**
  * @typedef ParsedURL
- * @type {import('.').ParsedURL}
+ * @type {import('./index.js').ParsedURL}
  */
 
 /**
