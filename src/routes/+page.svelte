@@ -415,7 +415,7 @@
   }
 
   h1 {
-    font-size: 3.2rem;
+    font-size: 2.8rem;
     margin-bottom: 1rem;
     line-height: 1.2;
     position: relative;
@@ -605,7 +605,7 @@
   }
 
   input, select {
-    background-color: transparent;
+    background-color: transparent !important;
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
     padding: 1rem;
@@ -613,13 +613,21 @@
     transition: all 0.3s ease;
     font-size: 1rem;
     box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 
   input:focus, select:focus {
     outline: none;
     border-color: var(--primary-red);
     box-shadow: none;
-    background-color: rgba(255, 34, 51, 0.05);
+    background-color: rgba(255, 34, 51, 0.05) !important;
+  }
+
+  input:not(:placeholder-shown) {
+    background-color: transparent !important;
+    color: #fff !important;
   }
 
   input::placeholder {
@@ -627,7 +635,6 @@
   }
 
   select {
-    appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%23666666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 1rem center;
@@ -766,7 +773,7 @@
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 1.8rem;
       letter-spacing: 2px;
     }
 
@@ -842,11 +849,23 @@
       margin-top: 2rem;
       font-size: 0.8rem;
     }
+
+    input, select, .time-select {
+      background-color: transparent !important;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+
+    input:not(:placeholder-shown) {
+      background-color: transparent !important;
+      color: #fff !important;
+    }
   }
 
   @media (max-width: 380px) {
     h1 {
-      font-size: 1.75rem;
+      font-size: 1.6rem;
     }
 
     .waitlist-form {
