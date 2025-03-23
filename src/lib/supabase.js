@@ -6,12 +6,14 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables. Please check your .env file.');
+  console.error('Missing Supabase environment variables');
 }
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+// Export the Supabase client as both default and named export
 export default supabase;
+export { supabase };
 
 // Waitlist functions
 export async function addToWaitlist({ name, phone, partySize, targetTime, currentParties }) {

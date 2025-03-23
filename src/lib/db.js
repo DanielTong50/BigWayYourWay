@@ -1,52 +1,27 @@
-import supabase from './supabase';
+import supabase from './supabase.js';
 
-export async function addToWaitlist({ name, phone, partySize, targetTime, currentParties }) {
+export async function addToWaitlist(name, phone, partySize, timePeriod) {
   try {
     const { data, error } = await supabase
       .from('waitlist')
       .insert([
-        {
-          name,
-          phone,
+        { 
+          name, 
+          phone, 
           party_size: partySize,
-          requested_time: targetTime,
-          status: 'waiting',
-          joined_at: new Date().toISOString()
+          time_period: timePeriod,
+          status: 'waiting' 
         }
       ])
-      .select();
+      .select()
+      .single();
 
     if (error) throw error;
-
-    // Get position in line
-    const { count } = await supabase
-      .from('waitlist')
-      .select('*', { count: 'exact' })
-      .eq('status', 'waiting')
-      .lte('joined_at', data[0].joined_at);
-
-    return {
-      success: true,
-      position: count
-    };
+    console.log('Added to waitlist:', data);
+    return data;
   } catch (error) {
     console.error('Error adding to waitlist:', error);
-    throw new Error('Failed to add to waitlist');
-  }
-}
-
-export async function getWaitlistCount() {
-  try {
-    const { count, error } = await supabase
-      .from('waitlist')
-      .select('*', { count: 'exact' })
-      .eq('status', 'waiting');
-
-    if (error) throw error;
-    return count;
-  } catch (error) {
-    console.error('Error getting waitlist count:', error);
-    throw new Error('Failed to get waitlist count');
+    throw error;
   }
 }
 
