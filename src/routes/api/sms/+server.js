@@ -11,7 +11,7 @@ export async function POST({ request }) {
         
         // Send the SMS
         const message = await client.messages.create({
-            body: `🍜 Big Way @UBC - Your table is ready! Join the waitlist now for your suggested time: ${suggestedTime}. Don't miss out on the best noodles in town!`,
+            body: `Join the waitlist now for your suggested time: ${suggestedTime}. https://gosnappy.io/lineup/?storeId=2980`,
             from: TWILIO_PHONE_NUMBER,
             to: phoneNumber
         });
