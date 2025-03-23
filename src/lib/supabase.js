@@ -24,10 +24,42 @@ export { supabase };
 // Waitlist functions
 export async function addToWaitlist({ name, phone, partySize, targetTime, currentParties }) {
   try {
+    // Validate and format target time
+    let formattedTargetTime = null;
+    if (targetTime) {
+      const [targetHours, targetMinutes] = targetTime.split(':');
+      if (!isNaN(targetHours) && !isNaN(targetMinutes)) {
+        formattedTargetTime = `${parseInt(targetHours).toString().padStart(2, '0')}:${parseInt(targetMinutes).toString().padStart(2, '0')}`;
+      } else {
+        throw new Error('Invalid target time format. Expected HH:mm');
+      }
+    }
+
     // Get AI suggested time
     let suggestedTime = null;
     try {
-      suggestedTime = await generateResponse(partySize, targetTime, currentParties);
+      const aiSuggestedTime = await generateResponse(partySize, targetTime, currentParties);
+      // Convert 12-hour format to 24-hour format
+      if (aiSuggestedTime) {
+        const [time, period] = aiSuggestedTime.split(' ');
+        const [hours, minutes] = time.split(':');
+        let hour = parseInt(hours);
+        
+        // Validate that hours and minutes are numbers
+        if (isNaN(hour) || isNaN(minutes)) {
+          throw new Error('Invalid AI suggested time format');
+        }
+        
+        // Convert to 24-hour format
+        if (period.toLowerCase() === 'pm' && hour !== 12) {
+          hour += 12;
+        } else if (period.toLowerCase() === 'am' && hour === 12) {
+          hour = 0;
+        }
+        
+        // Format as HH:mm
+        suggestedTime = `${hour.toString().padStart(2, '0')}:${minutes}`;
+      }
     } catch (aiError) {
       console.error('Error getting AI suggestion:', aiError);
       // Continue with null suggested time if AI fails
@@ -38,7 +70,7 @@ export async function addToWaitlist({ name, phone, partySize, targetTime, curren
       name: name.trim(),
       phone: phone ? phone.replace(/\D/g, '') : null,
       party_size: parseInt(partySize),
-      requested_time: targetTime,
+      requested_time: formattedTargetTime,
       suggested_time: suggestedTime,
       joined_at: new Date().toISOString(),
       status: 'waiting'

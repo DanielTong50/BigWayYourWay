@@ -239,7 +239,7 @@
 
 <main>
   <div class="header">
-    <h1>Big Way Your Way<br />(UBC)</h1>
+    <h1>Big Way: Your Way @UBC</h1>
   </div>
 
   <div class="queue-status">
@@ -343,6 +343,14 @@
         </div>
       </div>
       <small class="help-text">Select your preferred seating time</small>
+      
+      <div class="ai-time-display">
+        {#if aiLoading}
+          <p>Calculating recommended time...</p>
+        {:else if aiResponse}
+          <p>Recommended join time: <span class="recommended-time">{aiResponse}</span></p>
+        {/if}
+      </div>
     </div>
 
     <button type="submit" disabled={submitting}>
@@ -350,16 +358,11 @@
     </button>
 
     <p class="terms">
-        This is a beta testing model step 1 out of 5
+        @BigBacks 2025
+        <br> 
+        All Rights Reserved
     </p>
   </form>
-
-  {#if aiResponse}
-    <div class="ai-response">
-      <h3>Recommended Time</h3>
-      <p>Join the waitlist at {aiResponse}</p>
-    </div>
-  {/if}
 </main>
 
 <style>
@@ -472,26 +475,29 @@
     }
   }
 
-  .ai-response {
+  .ai-time-display {
+    margin-top: 0.5rem;
+    padding: 1rem;
+    min-height: 3.5rem;
     background-color: #f5f5f5;
     border: 1px solid #ddd;
-    padding: 1.25rem;
-    border-radius: 8px;
-    margin-top: 1rem;
-    text-align: center;
-    line-height: 1.4;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .ai-response h3 {
-    margin: 0 0 0.35rem 0;
-    color: #4B7AB9;
-    font-size: 1.25rem;
-  }
-
-  .ai-response p {
-    font-size: 1.5rem;
+  .ai-time-display p {
     margin: 0;
-    color: #333;
+    text-align: center;
+  }
+
+  .recommended-time {
+    color: #27ae60;
+    font-weight: 600;
+    font-size: 1.1rem;
   }
 
   .time-select-container {
