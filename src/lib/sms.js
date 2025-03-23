@@ -1,14 +1,14 @@
 /**
  * Client-side function to send SMS reminders via server endpoint
  */
-export async function sendWaitlistReminder(phoneNumber, suggestedTime) {
+export async function sendWaitlistReminder(phoneNumber, suggestedTime, requestedTime) {
     try {
         const response = await fetch('/api/sms', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ phoneNumber, suggestedTime })
+            body: JSON.stringify({ phoneNumber, suggestedTime, requestedTime })
         });
 
         const result = await response.json();

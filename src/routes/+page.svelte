@@ -209,7 +209,8 @@
           },
           body: JSON.stringify({
             phoneNumber: e164Phone,
-            suggestedTime: `${selectedHour}:${selectedMinute}`
+            suggestedTime: result.suggestedTime,
+            requestedTime: `${selectedHour}:${selectedMinute}`
           })
         });
       } catch (smsError) {

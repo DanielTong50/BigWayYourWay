@@ -7,11 +7,11 @@ const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 
 export async function POST({ request }) {
     try {
-        const { phoneNumber, suggestedTime } = await request.json();
+        const { phoneNumber, suggestedTime, requestedTime } = await request.json();
         
         // Send the SMS
         const message = await client.messages.create({
-            body: `🍜 Big Way @UBC - Your table is ready! Join the waitlist now for your suggested time: ${suggestedTime}. Don't miss out on the best noodles in town!`,
+            body: `To be seated by: ${requestedTime} please join the waitlist at ${suggestedTime}. Thank you –BigBack Team.`,
             from: TWILIO_PHONE_NUMBER,
             to: phoneNumber
         });

@@ -15,7 +15,11 @@ export async function checkAndSendSMSReminders() {
 
         // Send SMS for each entry
         for (const entry of entries) {
-            const result = await sendWaitlistReminder(entry.phone, entry.suggested_time);
+            const result = await sendWaitlistReminder(
+                entry.phone, 
+                entry.suggested_time,
+                entry.requested_time
+            );
             
             if (result.success) {
                 // Update the entry to mark SMS as sent
