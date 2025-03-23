@@ -11,14 +11,17 @@
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/adapter-netlify": "^5.0.0",
     "@sveltejs/kit": "^2.20.2",
-    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "svelte": "^4.2.19",
-    "vite": "^5.4.14"
+    "vite": "^5.0.3"
   },
   "type": "module",
   "dependencies": {
     "@supabase/supabase-js": "^2.49.1",
-    "@sveltejs/adapter-node": "^5.2.12",
-    "better-sqlite3": "^11.9.1"
+    "better-sqlite3": "^11.9.1",
+    "chromium": "^3.0.3",
+    "node-fetch": "^3.3.2",
+    "puppeteer": "^24.4.0",
+    "puppeteer-core": "^24.4.0"
   }
 }

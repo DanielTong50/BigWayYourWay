@@ -1,0 +1,74 @@
+import { init } from '../serverless.js';
+
+export const handler = init((() => {
+function __memo(fn) {
+	let value;
+	return () => value ??= (value = fn());
+}
+
+return {
+	appDir: "_app",
+	appPath: "_app",
+	assets: new Set([".DS_Store","favicon.png","location.svg","logo.png","phone.svg"]),
+	mimeTypes: {".png":"image/png",".svg":"image/svg+xml"},
+	_: {
+		client: {start:"_app/immutable/entry/start.PoxgwLN9.js",app:"_app/immutable/entry/app.ChPm2Zes.js",imports:["_app/immutable/entry/start.PoxgwLN9.js","_app/immutable/chunks/DyaJjZYx.js","_app/immutable/chunks/C3mXhKtC.js","_app/immutable/entry/app.ChPm2Zes.js","_app/immutable/chunks/C3mXhKtC.js","_app/immutable/chunks/CeLBSusy.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
+		nodes: [
+			__memo(() => import('../server/nodes/0.js')),
+			__memo(() => import('../server/nodes/1.js')),
+			__memo(() => import('../server/nodes/2.js')),
+			__memo(() => import('../server/nodes/3.js'))
+		],
+		routes: [
+			{
+				id: "/",
+				pattern: /^\/$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 2 },
+				endpoint: null
+			},
+			{
+				id: "/admin",
+				pattern: /^\/admin\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 3 },
+				endpoint: null
+			},
+			{
+				id: "/api/waitlist",
+				pattern: /^\/api\/waitlist\/?$/,
+				params: [],
+				page: null,
+				endpoint: __memo(() => import('../server/entries/endpoints/api/waitlist/_server.js'))
+			},
+			{
+				id: "/api/waitlist/all",
+				pattern: /^\/api\/waitlist\/all\/?$/,
+				params: [],
+				page: null,
+				endpoint: __memo(() => import('../server/entries/endpoints/api/waitlist/all/_server.js'))
+			},
+			{
+				id: "/api/waitlist/debug",
+				pattern: /^\/api\/waitlist\/debug\/?$/,
+				params: [],
+				page: null,
+				endpoint: __memo(() => import('../server/entries/endpoints/api/waitlist/debug/_server.js'))
+			},
+			{
+				id: "/api/waitlist/[id]",
+				pattern: /^\/api\/waitlist\/([^/]+?)\/?$/,
+				params: [{"name":"id","optional":false,"rest":false,"chained":false}],
+				page: null,
+				endpoint: __memo(() => import('../server/entries/endpoints/api/waitlist/_id_/_server.js'))
+			}
+		],
+		prerendered_routes: new Set([]),
+		matchers: async () => {
+			
+			return {  };
+		},
+		server_assets: {}
+	}
+}
+})());

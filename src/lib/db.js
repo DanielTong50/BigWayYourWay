@@ -1,6 +1,6 @@
 import supabase from './supabase';
 
-export async function addToWaitlist(name, phone, partySize) {
+export async function addToWaitlist(name, phone, partySize, timePeriod) {
   try {
     const { data, error } = await supabase
       .from('waitlist')
@@ -8,7 +8,8 @@ export async function addToWaitlist(name, phone, partySize) {
         { 
           name, 
           phone, 
-          party_size: partySize, 
+          party_size: partySize,
+          time_period: timePeriod,
           status: 'waiting' 
         }
       ])
