@@ -5,10 +5,16 @@ import { generateResponse } from './openai';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Missing Supabase environment variables');
+// Validate environment variables
+if (!supabaseUrl) {
+  throw new Error('VITE_SUPABASE_URL is required but not provided. Please check your environment variables.');
 }
 
+if (!supabaseAnonKey) {
+  throw new Error('VITE_SUPABASE_ANON_KEY is required but not provided. Please check your environment variables.');
+}
+
+// Initialize Supabase client
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Export the Supabase client as both default and named export
