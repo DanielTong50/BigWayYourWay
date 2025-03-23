@@ -58,4 +58,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ---
 
-Made with ❤️ by the BigWay, Your Way team 
+Made with ❤️ by the BigBacks: Daniel, Jack, and Jimmy
