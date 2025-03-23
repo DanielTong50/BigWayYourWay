@@ -239,11 +239,11 @@
 
 <main>
   <div class="header">
-    <h1>Big Way: Your Way @UBC</h1>
+    <h1>Big Way<span class="separator">:</span>Your Way <span class="location">@UBC</span></h1>
   </div>
 
   <div class="queue-status">
-    <p>There are currently {currentParties} parties in line</p>
+    <p>Currently <span class="highlight">{currentParties}</span> {currentParties === 1 ? 'party' : 'parties'} in line</p>
   </div>
 
   {#if success}
@@ -260,289 +260,601 @@
   {/if}
 
   <form class="waitlist-form" on:submit={handleSubmit}>
-    <div class="form-group">
-      <label for="name">Name*</label>
-      <input 
-        type="text" 
-        id="name" 
-        bind:value={name}
-        required 
-        disabled={submitting}
-        placeholder="Enter your name"
-        minlength="2"
-        maxlength="50"
-      />
-    </div>
-    
-    <div class="form-group">
-      <label for="phone">Mobile Number*</label>
-      <input 
-        type="tel" 
-        id="phone" 
-        value={phone}
-        on:input={handlePhoneInput}
-        disabled={submitting}
-        placeholder="(123) 456-7890"
-        required
-      />
-      <small class="help-text">Enter at least 10 digits</small>
-    </div>
-    
-    <div class="form-group">
-      <label for="party-size">Party Size*</label>
-      <select 
-        id="party-size" 
-        bind:value={partySize}
-        disabled={submitting}
-        required
-      >
-        <option value="">Select party size</option>
-        <option value="1">Party of 1</option>
-        <option value="2">Party of 2</option>
-        <option value="3">Party of 3</option>
-        <option value="4">Party of 4</option>
-        <option value="5">Party of 5</option>
-        <option value="6">Party of 6</option>
-        <option value="7">Party of 7</option>
-        <option value="8">Party of 8</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="target-time">Target Seating Time*</label>
-      <div class="time-select-container">
-        <div class="time-select-wrapper">
-          <select 
-            id="target-hour"
-            bind:value={selectedHour}
-            on:change={updateTargetTime}
-            disabled={submitting}
-            class="time-select"
-            required
-          >
-            <option value="">Hour</option>
-            {#each hourOptions as hour}
-              <option value={hour.value}>{hour.label}</option>
-            {/each}
-          </select>
-        </div>
-        <div class="time-select-wrapper">
-          <select 
-            id="target-minute"
-            bind:value={selectedMinute}
-            on:change={updateTargetTime}
-            disabled={submitting || !selectedHour}
-            class="time-select"
-            required
-          >
-            <option value="">Minute</option>
-            {#each minuteOptions as minute}
-              <option value={minute.value}>{minute.label}</option>
-            {/each}
-          </select>
-        </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          bind:value={name}
+          required 
+          disabled={submitting}
+          placeholder="Enter your name"
+          minlength="2"
+          maxlength="50"
+        />
       </div>
-      <small class="help-text">Select your preferred seating time</small>
       
-      <div class="ai-time-display">
-        {#if aiLoading}
-          <p>Calculating recommended time...</p>
-        {:else if aiResponse}
-          <p>Recommended join time: <span class="recommended-time">{aiResponse}</span></p>
-        {/if}
+      <div class="form-group">
+        <label for="phone">Mobile Number</label>
+        <input 
+          type="tel" 
+          id="phone" 
+          value={phone}
+          on:input={handlePhoneInput}
+          disabled={submitting}
+          placeholder="(123) 456-7890"
+          required
+        />
+      </div>
+      
+      <div class="form-group">
+        <label for="party-size">Party Size</label>
+        <select 
+          id="party-size" 
+          bind:value={partySize}
+          disabled={submitting}
+          required
+        >
+          <option value="">Select party size</option>
+          <option value="1">Party of 1</option>
+          <option value="2">Party of 2</option>
+          <option value="3">Party of 3</option>
+          <option value="4">Party of 4</option>
+          <option value="5">Party of 5</option>
+          <option value="6">Party of 6</option>
+          <option value="7">Party of 7</option>
+          <option value="8">Party of 8</option>
+        </select>
+      </div>
+
+      <div class="form-group time-group">
+        <label for="target-time">Target Seating Time*</label>
+        <div class="time-select-container">
+          <div class="time-select-wrapper">
+            <select 
+              id="target-hour"
+              bind:value={selectedHour}
+              on:change={updateTargetTime}
+              disabled={submitting}
+              class="time-select"
+              required
+            >
+              <option value="">Hour</option>
+              {#each hourOptions as hour}
+                <option value={hour.value}>{hour.label}</option>
+              {/each}
+            </select>
+          </div>
+          <div class="time-select-wrapper">
+            <select 
+              id="target-minute"
+              bind:value={selectedMinute}
+              on:change={updateTargetTime}
+              disabled={submitting || !selectedHour}
+              class="time-select"
+              required
+            >
+              <option value="">Minute</option>
+              {#each minuteOptions as minute}
+                <option value={minute.value}>{minute.label}</option>
+              {/each}
+            </select>
+          </div>
+        </div>
+        <small class="help-text">Select your preferred seating time</small>
+        
+        <div class="ai-time-display">
+          {#if aiLoading}
+            <p>Calculating recommended time...</p>
+          {:else if aiResponse}
+            <p>Recommended join time: <span class="recommended-time">{aiResponse}</span></p>
+          {/if}
+        </div>
       </div>
     </div>
 
-    <button type="submit" disabled={submitting}>
-      {submitting ? 'JOINING...' : 'JOIN THE LINE NOW'}
+    <button type="submit" disabled={submitting} class="submit-button">
+      <span class="button-text">
+        {submitting ? 'JOINING...' : 'JOIN THE LINE NOW'}
+      </span>
     </button>
 
     <p class="terms">
-        @BigBacks 2025
-        <br> 
-        All Rights Reserved
+      @BigBacks 2025
+      <br> 
+      All Rights Reserved
     </p>
   </form>
 </main>
 
 <style>
+  :root {
+    --primary-red: #ff2233;
+    --primary-red-light: #ff4444;
+    --primary-red-dark: #cc1122;
+    --accent-orange: #ff6b2b;
+    --accent-red-dark: #990000;
+    --bg-dark: #0a0a0a;
+    --bg-darker: #050505;
+    --surface-dark: #151515;
+    --surface-darker: #111111;
+    --border-color: #333333;
+  }
+
   main {
-    padding: 2rem 1rem;
-    max-width: 600px;
+    padding: 3rem 2rem;
+    max-width: 1200px;
     margin: 0 auto;
+    background: linear-gradient(135deg, var(--bg-darker), var(--bg-dark));
+    min-height: 100vh;
+    color: #fff;
   }
 
   .header {
     text-align: center;
-    margin-bottom: 1.5rem;
+    margin-bottom: 3rem;
+    animation: fadeIn 0.5s ease-out;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-red), transparent);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   h1 {
-    font-size: 2rem;
+    font-size: 3.2rem;
     margin-bottom: 1rem;
     line-height: 1.2;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 800;
+    animation: titleGradient 8s ease infinite;
+    background-size: 300% 300%;
+    background-image: linear-gradient(
+      -45deg,
+      var(--accent-orange) 0%,
+      var(--primary-red) 25%,
+      var(--primary-red-dark) 51%,
+      var(--accent-red-dark) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 4px rgba(255, 34, 51, 0.1);
+  }
+
+  @keyframes titleGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .separator {
+    -webkit-text-fill-color: var(--primary-red);
+    margin: 0 0.5rem;
+  }
+
+  .location {
+    color: #fff;
+    font-size: 0.5em;
+    background: none;
+    -webkit-text-fill-color: #fff;
+    opacity: 0.9;
   }
 
   .queue-status {
     text-align: center;
     font-size: 1.5rem;
-    font-weight: 500;
-    margin: 1.5rem 0;
+    font-weight: 300;
+    margin: 2rem 0;
+    color: #fff;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .highlight {
+    color: var(--primary-red);
+    font-weight: 700;
+    font-size: 2rem;
+    text-shadow: 0 0 20px rgba(255, 34, 51, 0.3);
   }
 
   .waitlist-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    background: linear-gradient(145deg, var(--surface-dark), var(--surface-darker));
+    padding: 3rem;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    animation: slideUp 0.5s ease-out;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 34, 51, 0.1);
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2.5rem;
   }
 
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.75rem;
   }
 
-  .form-group label {
-    color: #666;
-    font-size: 0.9rem;
+  .time-group {
+    grid-column: 1 / -1;
+    background: linear-gradient(145deg, 
+      rgba(0, 0, 0, 0.4),
+      rgba(17, 17, 17, 0.4)
+    );
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 34, 51, 0.2);
+    position: relative;
+    overflow: hidden;
   }
 
-  .help-text {
-    color: #666;
-    font-size: 0.8rem;
-    margin-top: 0.15rem;
+  .time-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent,
+      var(--primary-red-light),
+      transparent
+    );
   }
 
-  input::placeholder {
-    color: #999;
-  }
-
-  .terms {
-    margin-top: 1rem;
-    font-size: 0.875rem;
-    color: #666;
-    text-align: center;
-  }
-
-  .success-message {
-    background-color: #ff4444;
-    border: 1px solid #ff0000;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: white;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0% {
-      transform: scale(1);
-      opacity: 1;
-    }
-    50% {
-      transform: scale(1.02);
-      opacity: 0.9;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-
-  .error-message {
-    background-color: #ffe6e6;
-    border: 1px solid #ffb3b3;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: #cc0000;
-  }
-
-  button[disabled] {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-
-  @media (max-width: 480px) {
-    main {
-      padding: 1rem;
-    }
-
-    h1 {
-      font-size: 1.75rem;
-    }
-  }
-
-  .ai-time-display {
-    margin-top: 0.5rem;
-    padding: 1rem;
-    min-height: 3.5rem;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    color: #666;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .ai-time-display p {
-    margin: 0;
-    text-align: center;
-  }
-
-  .recommended-time {
-    color: #27ae60;
-    font-weight: 600;
-    font-size: 1.1rem;
+  .time-group::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent,
+      var(--primary-red),
+      transparent
+    );
   }
 
   .time-select-container {
-    display: flex;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
   }
 
   .time-select-wrapper {
-    flex: 1;
+    position: relative;
+  }
+
+  .time-select-wrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent,
+      var(--primary-red-light),
+      transparent
+    );
+    opacity: 0.3;
+  }
+
+  .time-select-wrapper:hover::after {
+    opacity: 0.3;
   }
 
   .time-select {
-    appearance: none;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 0.5rem;
-    font-size: 1rem;
     width: 100%;
-    cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.5rem center;
-    background-size: 1.2em;
-    padding-right: 2.5rem;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
   }
 
   .time-select:focus {
     outline: none;
-    border-color: #4B7AB9;
-    box-shadow: 0 0 0 2px rgba(75, 122, 185, 0.2);
+    border-color: var(--primary-red);
+    box-shadow: none;
+    background-color: rgba(255, 34, 51, 0.05);
   }
 
-  .time-select:disabled {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
+  .form-group label {
+    color: #fff;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
-  .time-select option {
-    padding: 0.5rem;
-    color: #333;
-    background-color: white;
+  input, select {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    box-shadow: none;
   }
 
-  .time-select option:hover {
-    background-color: #f0f0f0;
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-red);
+    box-shadow: none;
+    background-color: rgba(255, 34, 51, 0.05);
+  }
+
+  input::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%23666666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+
+  select option {
+    background-color: var(--surface-darker);
+    color: #fff;
+  }
+
+  .help-text {
+    color: #888;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+  }
+
+  .submit-button {
+    width: 100%;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-red-light) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(255, 34, 51, 0.3);
+  }
+
+  .submit-button:not([disabled]) {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(255, 34, 51, 0.3);
+  }
+
+  .submit-button:active:not([disabled]) {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(255, 34, 51, 0.2);
+  }
+
+  .success-message {
+    background: linear-gradient(135deg, var(--primary-red) 0%, var(--primary-red-light) 100%);
+    border: none;
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: white;
+    animation: pulse 2s infinite;
+    box-shadow: 0 5px 15px rgba(255, 34, 51, 0.3);
+  }
+
+  .success-message p:first-child {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; box-shadow: 0 5px 15px rgba(255, 34, 51, 0.3); }
+    50% { transform: scale(1.02); opacity: 0.9; box-shadow: 0 5px 25px rgba(255, 34, 51, 0.5); }
+    100% { transform: scale(1); opacity: 1; box-shadow: 0 5px 15px rgba(255, 34, 51, 0.3); }
+  }
+
+  .error-message {
+    background: linear-gradient(135deg, rgba(255, 34, 51, 0.1) 0%, rgba(255, 34, 51, 0.15) 100%);
+    border: 1px solid var(--primary-red);
+    padding: 1.25rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: var(--primary-red-light);
+    box-shadow: 0 5px 15px rgba(255, 34, 51, 0.1);
+  }
+
+  .ai-time-display {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    min-height: 4.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 34, 51, 0.2);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-time-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent,
+      var(--primary-red-light),
+      transparent
+    );
+  }
+
+  .recommended-time {
+    color: var(--primary-red-light);
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin-left: 0.5rem;
+    text-shadow: 0 0 10px rgba(255, 34, 51, 0.3);
+  }
+
+  .terms {
+    margin-top: 2.5rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 768px) {
+    main {
+      padding: 1.5rem 1rem;
+      min-height: calc(100vh - 2rem);
+    }
+
+    .header {
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      letter-spacing: 2px;
+    }
+
+    .queue-status {
+      margin: 1.5rem 0;
+      font-size: 1.2rem;
+    }
+
+    .highlight {
+      font-size: 1.6rem;
+    }
+
+    .waitlist-form {
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .time-group {
+      padding: 1.5rem;
+    }
+
+    .time-select-container {
+      gap: 0.75rem;
+    }
+
+    input, select, .time-select {
+      padding: 0.875rem;
+      font-size: 0.95rem;
+    }
+
+    .form-group label {
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+    }
+
+    .submit-button {
+      padding: 1rem;
+      font-size: 1rem;
+      letter-spacing: 1.5px;
+    }
+
+    .success-message {
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .success-message p:first-child {
+      font-size: 1.2rem;
+    }
+
+    .error-message {
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .ai-time-display {
+      padding: 1.25rem;
+      margin-top: 1.25rem;
+      font-size: 1rem;
+    }
+
+    .recommended-time {
+      font-size: 1.1rem;
+    }
+
+    .terms {
+      margin-top: 2rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    h1 {
+      font-size: 1.75rem;
+    }
+
+    .waitlist-form {
+      padding: 1.25rem;
+    }
+
+    .time-group {
+      padding: 1.25rem;
+    }
   }
 </style> 
