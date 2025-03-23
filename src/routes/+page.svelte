@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { generateResponse } from '$lib/openai';
   import { addToWaitlist, getWaitlistCount, supabase } from '$lib/supabase';
+  import { startSMSReminderJob } from '$lib/backgroundJobs';
 
   let partySize = "4";
   let timePeriod = "5";
@@ -148,6 +149,9 @@
     await updateQueueCount();
     // Update queue count every 30 seconds
     setInterval(updateQueueCount, 30000);
+    
+    // Start SMS reminder job
+    startSMSReminderJob();
   });
 
   async function updateQueueCount() {
@@ -184,13 +188,34 @@
     submitting = true;
 
     try {
+      // Format phone number to E.164 format for Twilio
+      const formattedPhone = phone.replace(/\D/g, '');
+      const e164Phone = formattedPhone.startsWith('1') ? `+${formattedPhone}` : `+1${formattedPhone}`;
+      
       const result = await addToWaitlist({
         name: name.trim(),
-        phone: phone.replace(/\D/g, '') || null,
+        phone: e164Phone,
         partySize: parseInt(partySize),
         targetTime: `${selectedHour}:${selectedMinute}`,
         currentParties
       });
+
+      // Send immediate SMS notification
+      try {
+        await fetch('/api/sms', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            phoneNumber: e164Phone,
+            suggestedTime: `${selectedHour}:${selectedMinute}`
+          })
+        });
+      } catch (smsError) {
+        console.error('Failed to send SMS:', smsError);
+        // Continue with the form submission even if SMS fails
+      }
 
       success = true;
       queuePosition = result.position;

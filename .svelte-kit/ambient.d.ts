@@ -29,6 +29,9 @@ declare module '$env/static/private' {
 	export const VITE_SUPABASE_URL: string;
 	export const VITE_SUPABASE_ANON_KEY: string;
 	export const VITE_OPENAI_API_KEY: string;
+	export const TWILIO_ACCOUNT_SID: string;
+	export const TWILIO_AUTH_TOKEN: string;
+	export const TWILIO_PHONE_NUMBER: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
 	export const INIT_CWD: string;
@@ -122,6 +125,9 @@ declare module '$env/dynamic/private' {
 		VITE_SUPABASE_URL: string;
 		VITE_SUPABASE_ANON_KEY: string;
 		VITE_OPENAI_API_KEY: string;
+		TWILIO_ACCOUNT_SID: string;
+		TWILIO_AUTH_TOKEN: string;
+		TWILIO_PHONE_NUMBER: string;
 		TERM_PROGRAM: string;
 		NODE: string;
 		INIT_CWD: string;
