@@ -264,11 +264,11 @@
 
 <main>
   <div class="header">
-    <h1>Big Way<span class="separator">:</span>Your Way <span class="location">@UBC</span></h1>
+    <h1>Big Way,<span class="separator"> Your Way</span><span class="location">@UBC</span></h1>
   </div>
 
   <div class="queue-status">
-    <p>Currently <span class="highlight">{currentParties}</span> {currentParties === 1 ? 'party' : 'parties'} in line</p>
+    <p>Currently there are <span class="highlight">{currentParties}</span> {currentParties === 1 ? 'party' : 'parties'} in line</p>
   </div>
 
   {#if success}
@@ -400,11 +400,12 @@
     --primary-red-dark: #cc1122;
     --accent-orange: #ff6b2b;
     --accent-red-dark: #990000;
-    --bg-dark: #0a0a0a;
-    --bg-darker: #050505;
+    --bg-dark: rgb(255, 255, 255);
+    --bg-darker: #ffffff;
     --surface-dark: #151515;
     --surface-darker: #111111;
-    --border-color: #333333;
+    --border-color: #666464;
+    --text-color: #999999;
   }
 
   main {
@@ -431,7 +432,6 @@
     transform: translateX(-50%);
     width: 80px;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--primary-red), transparent);
   }
 
   @keyframes fadeIn {
@@ -441,24 +441,14 @@
 
   h1 {
     font-size: 2.8rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
     line-height: 1.2;
     position: relative;
     text-transform: uppercase;
     letter-spacing: 3px;
     font-weight: 800;
-    animation: titleGradient 8s ease infinite;
     background-size: 300% 300%;
-    background-image: linear-gradient(
-      -45deg,
-      var(--accent-orange) 0%,
-      var(--primary-red) 25%,
-      var(--primary-red-dark) 51%,
-      var(--accent-red-dark) 100%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 2px 4px rgba(255, 34, 51, 0.1);
+    color: rgb(0, 0, 0);
   }
 
   @keyframes titleGradient {
@@ -479,11 +469,11 @@
   }
 
   .location {
-    color: #fff;
+    color: #625e5e;
     font-size: 0.5em;
     background: none;
-    -webkit-text-fill-color: #fff;
-    opacity: 0.9;
+    opacity: 0.6;
+    font-weight: 600;
   }
 
   .queue-status {
@@ -491,9 +481,8 @@
     font-size: 1.5rem;
     font-weight: 300;
     margin: 2rem 0;
-    color: #fff;
+    color: #595656;
     letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   .highlight {
@@ -504,12 +493,11 @@
   }
 
   .waitlist-form {
-    background: linear-gradient(145deg, var(--surface-dark), var(--surface-darker));
     padding: 3rem;
     border-radius: 16px;
     border: 1px solid var(--border-color);
     animation: slideUp 0.5s ease-out;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4),
+    box-shadow: 0 10px 10px rgba(84, 81, 81, 0.4),
                 0 0 0 1px rgba(255, 34, 51, 0.1);
   }
 
@@ -529,17 +517,14 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    background-color: white;
   }
 
   .time-group {
     grid-column: 1 / -1;
-    background: linear-gradient(145deg, 
-      rgba(0, 0, 0, 0.4),
-      rgba(17, 17, 17, 0.4)
-    );
     padding: 2rem;
     border-radius: 12px;
-    border: 1px solid rgba(255, 34, 51, 0.2);
+    border: 1px solid var(--border-color);
     position: relative;
     overflow: hidden;
   }
@@ -551,25 +536,7 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, 
-      transparent,
-      var(--primary-red-light),
-      transparent
-    );
-  }
-
-  .time-group::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, 
-      transparent,
-      var(--primary-red),
-      transparent
-    );
+    color: var(--text-color);
   }
 
   .time-select-container {
@@ -583,21 +550,6 @@
     position: relative;
   }
 
-  .time-select-wrapper::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, 
-      transparent,
-      var(--primary-red-light),
-      transparent
-    );
-    opacity: 0.3;
-  }
-
   .time-select-wrapper:hover::after {
     opacity: 0.3;
   }
@@ -605,10 +557,10 @@
   .time-select {
     width: 100%;
     background-color: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     padding: 1rem;
     border-radius: 8px;
-    color: #fff;
+    color: var(--text-color);
     font-size: 1rem;
     transition: all 0.3s ease;
   }
@@ -621,18 +573,17 @@
   }
 
   .form-group label {
-    color: #fff;
+    color: #666666;
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: 500;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   input, select {
     background-color: transparent !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #3b3030;
     padding: 1rem;
     border-radius: 8px;
     transition: all 0.3s ease;
@@ -652,14 +603,25 @@
 
   input:not(:placeholder-shown) {
     background-color: transparent !important;
-    color: #fff !important;
+    color: #666666 !important;
   }
 
   input::placeholder {
-    color: rgba(255, 255, 255, 0.3);
+    color: #999999;
   }
 
   select {
+    background-color: white !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 4.5L6 8L9.5 4.5' stroke='%23666666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 1rem center;
@@ -667,12 +629,19 @@
   }
 
   select option {
-    background-color: var(--surface-darker);
-    color: #fff;
+    background-color: white;
+    color: #666666;
+  }
+
+  select:focus {
+    outline: none;
+    border-color: var(--primary-red);
+    box-shadow: none;
+    background-color: white !important;
   }
 
   .help-text {
-    color: #888;
+    color: #666666;
     font-size: 0.8rem;
     letter-spacing: 0.5px;
   }
@@ -691,7 +660,6 @@
     text-transform: uppercase;
     letter-spacing: 2px;
     position: relative;
-    box-shadow: 0 4px 12px rgba(255, 34, 51, 0.3);
   }
 
   .submit-button:not([disabled]) {
@@ -743,16 +711,15 @@
     margin-top: 1.5rem;
     padding: 1.5rem;
     min-height: 4.5rem;
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(255, 34, 51, 0.2);
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     font-size: 1.1rem;
-    color: #fff;
+    color: #666666;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
     position: relative;
     overflow: hidden;
   }
@@ -764,25 +731,20 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, 
-      transparent,
-      var(--primary-red-light),
-      transparent
-    );
+    ;
   }
 
   .recommended-time {
-    color: var(--primary-red-light);
+    color: var(--primary-red);
     font-weight: 600;
     font-size: 1.3rem;
     margin-left: 0.5rem;
-    text-shadow: 0 0 10px rgba(255, 34, 51, 0.3);
   }
 
   .terms {
     margin-top: 2.5rem;
     font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(139, 139, 139, 0.4);
     text-align: center;
     letter-spacing: 1px;
   }
