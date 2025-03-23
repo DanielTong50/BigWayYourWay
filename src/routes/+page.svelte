@@ -192,6 +192,12 @@
       const formattedPhone = phone.replace(/\D/g, '');
       const e164Phone = formattedPhone.startsWith('1') ? `+${formattedPhone}` : `+1${formattedPhone}`;
       
+      // Format time to 12-hour format for display
+      const hour = parseInt(selectedHour);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      const displayHour = hour % 12 || 12;
+      const formattedTime = `${displayHour}:${selectedMinute} ${ampm}`;
+      
       const result = await addToWaitlist({
         name: name.trim(),
         phone: e164Phone,
@@ -209,7 +215,7 @@
           },
           body: JSON.stringify({
             phoneNumber: e164Phone,
-            suggestedTime: `${selectedHour}:${selectedMinute}`
+            suggestedTime: formattedTime
           })
         });
       } catch (smsError) {
@@ -273,8 +279,7 @@
 
   {#if success}
     <div class="success-message animated">
-      <p>Successfully joined the waitlist!</p>
-      <p>Your position in line: {queuePosition}</p>
+      <p>Sent SMS: Calculated when to join the waitlist</p>
     </div>
   {/if}
 
